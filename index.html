@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ember & Oak — Specialty Coffee</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=721EUH3k6K8-MJLYkBtn6jV31zQlXpoDwfgnF7b5w8IKrfAbuNzqbzpGQ52WLxzhy5k1b_u71ve3riCshGd-7q4lDCHzBTkpu-RIdsDc35EJyLVpPKZdkcJxq2_EpwS6X1M6Rj5UU4hmzf9mWKECMXf7dt5cXtNruUxnccdpOiImJEPackxJAX56-ljylzH1YsxqU7kEB1L6zQpBNZGO8gUh6-dKUAPULWUIscOvBNTGgs7-pnSqWKUpxfH-JeQmya5mAInxQTgRDaq6m-8aUw" charset="UTF-8"></script><style>
+:root {
+  --cream: #F5F0E8;
+  --dark: #1A1208;
+  --espresso: #2C1A0E;
+    --brown: #6B3F1F;
+    --caramel: #C47E3A;
+    --gold: #D4A245;
+    --warm-white: #FBF7F0;
+    --muted: #8A7565;
+    --border: rgba(107,63,31,0.15);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.4rem 5vw;
+    transition: background 0.4s, box-shadow 0.4s;
+  }
+  nav.scrolled {
+    background: rgba(245,240,232,0.96);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 1px 0 var(--border);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--espresso);
+    letter-spacing: 0.02em;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--caramel); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--espresso);
+    opacity: 0.75;
+    transition: opacity 0.2s;
+  }
+  .nav-links a:hover { opacity: 1; }
+  .nav-cta {
+    padding: 0.6rem 1.5rem;
+    background: var(--espresso);
+    color: var(--cream) !important;
+    border-radius: 2rem;
+    opacity: 1 !important;
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--brown) !important; }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span { width: 24px; height: 2px; background: var(--espresso); transition: 0.3s; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-content {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 8rem 5vw 6rem 8vw;
+    position: relative; z-index: 2;
+  }
+  .hero-eyebrow {
+    font-size: 0.75rem; font-weight: 500;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--caramel); margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .hero-eyebrow::before {
+    content: ''; display: inline-block;
+    width: 40px; height: 1px; background: var(--caramel);
+  }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 5vw, 5.5rem);
+    line-height: 1.05;
+    color: var(--espresso);
+    margin-bottom: 1.5rem;
+  }
+  h1 em { color: var(--caramel); font-style: italic; }
+  .hero-desc {
+    font-size: 1rem; font-weight: 300;
+    line-height: 1.8; color: var(--muted);
+    max-width: 400px; margin-bottom: 3rem;
+  }
+  .btn-group { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    padding: 0.9rem 2.2rem;
+    background: var(--espresso);
+    color: var(--cream);
+    font-family: 'Jost', sans-serif;
+    font-size: 0.85rem; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    border: none; border-radius: 3rem; cursor: pointer;
+    text-decoration: none;
+    transition: background 0.25s, transform 0.2s;
+  }
+  .btn-primary:hover { background: var(--brown); transform: translateY(-2px); }
+  .btn-outline {
+    padding: 0.9rem 2.2rem;
+    background: transparent;
+    color: var(--espresso);
+    font-family: 'Jost', sans-serif;
+    font-size: 0.85rem; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    border: 1.5px solid var(--espresso);
+    border-radius: 3rem; cursor: pointer;
+    text-decoration: none;
+    transition: all 0.25s;
+  }
+  .btn-outline:hover { background: var(--espresso); color: var(--cream); }
+  .hero-stats {
+    display: flex; gap: 3rem; margin-top: 4rem;
+    padding-top: 2rem; border-top: 1px solid var(--border);
+  }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem; color: var(--espresso);
+  }
+  .stat-label { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 0.2rem; }
+
+  .hero-visual {
+    position: relative;
+    background: var(--espresso);
+    overflow: hidden;
+  }
+  .hero-img-wrapper {
+    width: 100%; height: 100%;
+    background:
+      radial-gradient(ellipse at 60% 40%, rgba(196,126,58,0.3) 0%, transparent 60%),
+      var(--espresso);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .coffee-illustration {
+    width: 320px; height: 320px;
+    animation: float 4s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-18px); }
+  }
+  .steam-line {
+    animation: steam 2s ease-in-out infinite;
+    transform-origin: bottom;
+  }
+  .steam-line:nth-child(2) { animation-delay: 0.3s; }
+  .steam-line:nth-child(3) { animation-delay: 0.6s; }
+  @keyframes steam {
+    0% { opacity: 0; transform: translateY(0) scaleX(1); }
+    50% { opacity: 0.8; }
+    100% { opacity: 0; transform: translateY(-30px) scaleX(1.4); }
+  }
+  .hero-badge {
+    position: absolute; bottom: 3rem; right: 3rem;
+    width: 110px; height: 110px;
+    border: 1.5px solid rgba(196,126,58,0.5);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    animation: spin 20s linear infinite;
+    color: var(--caramel);
+    font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* MARQUEE */
+  .marquee-wrap {
+    background: var(--caramel);
+    padding: 0.9rem 0; overflow: hidden;
+  }
+  .marquee-track {
+    display: flex; gap: 3rem;
+    animation: marquee 22s linear infinite;
+    white-space: nowrap;
+  }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+  .marquee-item {
+    font-size: 0.78rem; font-weight: 500;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--warm-white); opacity: 0.9;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .marquee-item::after { content: '·'; opacity: 0.5; }
+
+  /* ABOUT */
+  .about {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0; min-height: 60vh;
+  }
+  .about-image {
+    background:
+      linear-gradient(160deg, rgba(44,26,14,0.5) 0%, transparent 60%),
+      url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800') center/cover no-repeat;
+    min-height: 500px;
+  }
+  .about-content {
+    padding: 6rem 8vw 6rem 5vw;
+    background: var(--warm-white);
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .section-tag {
+    font-size: 0.72rem; font-weight: 500;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--caramel); margin-bottom: 1rem;
+  }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3vw, 3rem);
+    line-height: 1.2; color: var(--espresso);
+    margin-bottom: 1.5rem;
+  }
+  .about-text {
+    font-size: 0.95rem; font-weight: 300;
+    line-height: 1.9; color: var(--muted);
+    margin-bottom: 2rem;
+  }
+  .feature-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+  .feature-list li {
+    display: flex; align-items: center; gap: 0.75rem;
+    font-size: 0.88rem; color: var(--espresso);
+  }
+  .feature-list li::before {
+    content: ''; width: 6px; height: 6px;
+    border-radius: 50%; background: var(--caramel);
+    flex-shrink: 0;
+  }
+
+  /* MENU */
+  .menu { padding: 7rem 5vw; background: var(--cream); }
+  .section-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 4rem;
+  }
+  .menu-tabs {
+    display: flex; gap: 0.5rem;
+    background: rgba(107,63,31,0.08);
+    border-radius: 3rem; padding: 0.35rem;
+    margin-bottom: 4rem;
+  }
+  .tab-btn {
+    padding: 0.6rem 1.6rem;
+    background: transparent;
+    border: none; border-radius: 2rem;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.82rem; font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted); cursor: pointer;
+    transition: all 0.25s;
+  }
+  .tab-btn.active {
+    background: var(--espresso);
+    color: var(--cream);
+  }
+  .menu-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .menu-card {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 1.25rem;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    opacity: 0; transform: translateY(20px);
+    animation: fadeUp 0.5s forwards;
+  }
+  .menu-card:nth-child(1) { animation-delay: 0.05s; }
+  .menu-card:nth-child(2) { animation-delay: 0.1s; }
+  .menu-card:nth-child(3) { animation-delay: 0.15s; }
+  .menu-card:nth-child(4) { animation-delay: 0.2s; }
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .menu-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(44,26,14,0.12); }
+  .menu-card-img {
+    height: 180px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 4rem;
+    background: linear-gradient(135deg, rgba(196,126,58,0.12), rgba(44,26,14,0.06));
+  }
+  .menu-card-body { padding: 1.25rem 1.5rem; }
+  .menu-card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem; color: var(--espresso);
+    margin-bottom: 0.4rem;
+  }
+  .menu-card-desc {
+    font-size: 0.82rem; color: var(--muted); line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+  .menu-card-footer {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .menu-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem; color: var(--caramel);
+  }
+  .add-btn {
+    width: 36px; height: 36px;
+    border-radius: 50%; border: 1.5px solid var(--espresso);
+    background: transparent; color: var(--espresso);
+    font-size: 1.2rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .add-btn:hover { background: var(--espresso); color: var(--cream); }
+
+  /* MENU DATA */
+  .menu-section { display: none; }
+  .menu-section.active { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+
+  /* PROCESS */
+  .process { padding: 7rem 5vw; background: var(--espresso); }
+  .process h2 { color: var(--cream); }
+  .process .section-tag { color: var(--gold); }
+  .steps {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0; margin-top: 4rem;
+    position: relative;
+  }
+  .steps::before {
+    content: ''; position: absolute; top: 40px; left: 10%; right: 10%;
+    height: 1px; background: rgba(196,126,58,0.3);
+    z-index: 0;
+  }
+  .step { text-align: center; padding: 0 1.5rem; position: relative; z-index: 1; }
+  .step-num {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: rgba(196,126,58,0.15);
+    border: 1px solid rgba(196,126,58,0.4);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 1.8rem;
+    transition: background 0.3s;
+  }
+  .step:hover .step-num { background: rgba(196,126,58,0.3); }
+  .step-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem; color: var(--cream);
+    margin-bottom: 0.6rem;
+  }
+  .step-desc { font-size: 0.82rem; color: rgba(251,247,240,0.5); line-height: 1.7; }
+
+  /* TESTIMONIALS */
+  .testimonials { padding: 7rem 5vw; background: var(--warm-white); }
+  .reviews-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem; margin-top: 3rem;
+  }
+  .review-card {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 1.25rem;
+    padding: 2rem;
+    transition: transform 0.3s;
+  }
+  .review-card:hover { transform: translateY(-4px); }
+  .stars { color: var(--gold); font-size: 0.9rem; margin-bottom: 1rem; letter-spacing: 0.1em; }
+  .review-text {
+    font-family: 'Playfair Display', serif;
+    font-style: italic; font-size: 0.98rem;
+    line-height: 1.75; color: var(--espresso);
+    margin-bottom: 1.5rem;
+  }
+  .reviewer { display: flex; align-items: center; gap: 0.75rem; }
+  .reviewer-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--caramel);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 600; color: var(--warm-white);
+  }
+  .reviewer-name { font-size: 0.88rem; font-weight: 500; color: var(--espresso); }
+  .reviewer-since { font-size: 0.75rem; color: var(--muted); }
+
+  /* CTA SECTION */
+  .cta-section {
+    padding: 7rem 5vw;
+    background: var(--caramel);
+    text-align: center;
+  }
+  .cta-section h2 { color: var(--espresso); }
+  .cta-section p { color: rgba(44,26,14,0.65); margin: 1rem auto 2.5rem; max-width: 500px; font-size: 1rem; line-height: 1.8; }
+
+  /* FOOTER */
+  footer {
+    background: var(--dark);
+    padding: 5rem 5vw 2rem;
+  }
+  .footer-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 4rem; margin-bottom: 4rem;
+  }
+  .footer-brand { }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem; color: var(--cream);
+    margin-bottom: 1rem; display: block;
+  }
+  .footer-logo span { color: var(--caramel); }
+  .footer-desc { font-size: 0.85rem; color: rgba(245,240,232,0.4); line-height: 1.8; max-width: 260px; }
+  .footer-col h4 {
+    font-size: 0.72rem; font-weight: 500;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--caramel); margin-bottom: 1.5rem;
+  }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+  .footer-col ul a {
+    text-decoration: none; font-size: 0.88rem;
+    color: rgba(245,240,232,0.5); transition: color 0.2s;
+  }
+  .footer-col ul a:hover { color: var(--cream); }
+  .footer-bottom {
+    border-top: 1px solid rgba(245,240,232,0.1);
+    padding-top: 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 0.8rem; color: rgba(245,240,232,0.3);
+  }
+
+  /* CART */
+  .cart-fab {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 200;
+    width: 60px; height: 60px;
+    background: var(--espresso); color: var(--cream);
+    border-radius: 50%; border: none; cursor: pointer;
+    font-size: 1.4rem;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 24px rgba(44,26,14,0.35);
+    transition: transform 0.25s;
+  }
+  .cart-fab:hover { transform: scale(1.08); }
+  .cart-count {
+    position: absolute; top: -4px; right: -4px;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--caramel); color: var(--espresso);
+    font-size: 0.7rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    display: none;
+  }
+  .cart-count.show { display: flex; }
+
+  /* CART DRAWER */
+.cart-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(26,18,8,0.5);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ADD THIS 👇 */
+.cart-overlay.open {
+  pointer-events: none !important;
+}
+ .cart-overlay.open { 
+  opacity: 1; 
+  pointer-events: none; 
+}
+  .cart-drawer {
+    position: fixed; top: 0; right: 0; bottom: 0; z-index: 301;
+    width: min(400px, 92vw);
+    background: var(--warm-white);
+    transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+    display: flex; flex-direction: column;
+  }
+  .cart-drawer.open { transform: translateX(0); }
+  .cart-drawer-head {
+    padding: 1.5rem 1.5rem 1rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .cart-drawer-head h3 {
+    font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--espresso);
+  }
+  .close-btn {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: transparent; border: 1px solid var(--border);
+    cursor: pointer; font-size: 1.1rem; color: var(--muted);
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .close-btn:hover { background: var(--espresso); color: var(--cream); border-color: var(--espresso); }
+  .cart-items { flex: 1; overflow-y: auto; padding: 1rem 1.5rem; }
+  .cart-item {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1rem 0; border-bottom: 1px solid var(--border);
+  }
+  .cart-item-icon { font-size: 2rem; }
+  .cart-item-info { flex: 1; }
+  .cart-item-name { font-weight: 500; color: var(--espresso); font-size: 0.9rem; }
+  .cart-item-price { font-size: 0.82rem; color: var(--caramel); }
+  .qty-ctrl { display: flex; align-items: center; gap: 0.5rem; }
+  .qty-btn {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--cream); border: 1px solid var(--border);
+    cursor: pointer; font-size: 0.9rem; color: var(--espresso);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .qty-num { font-size: 0.9rem; font-weight: 500; min-width: 1.2rem; text-align: center; }
+  .empty-cart { text-align: center; padding: 4rem 2rem; color: var(--muted); }
+  .empty-cart-icon { font-size: 3rem; margin-bottom: 1rem; }
+  .cart-footer { padding: 1.5rem; border-top: 1px solid var(--border); }
+  .cart-total {
+    display: flex; justify-content: space-between;
+    font-family: 'Playfair Display', serif; font-size: 1.1rem;
+    color: var(--espresso); margin-bottom: 1rem;
+  }
+  .checkout-btn {
+    width: 100%; padding: 1rem;
+    background: var(--espresso); color: var(--cream);
+    border: none; border-radius: 3rem; cursor: pointer;
+    font-family: 'Jost', sans-serif; font-size: 0.85rem;
+    font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+    transition: background 0.25s;
+  }
+  .checkout-btn:hover { background: var(--brown); }
+
+  /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    .steps { grid-template-columns: repeat(2, 1fr); gap: 3rem; }
+    .steps::before { display: none; }
+    .reviews-grid { grid-template-columns: repeat(2, 1fr); }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+  }
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-content { padding: 8rem 5vw 4rem; }
+    .hero-visual { min-height: 50vw; }
+    .about { grid-template-columns: 1fr; }
+    .about-image { min-height: 300px; }
+    .about-content { padding: 4rem 5vw; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .reviews-grid { grid-template-columns: 1fr; }
+    .section-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .hero-stats { gap: 1.5rem; }
+    .steps { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">Ember <span>&</span> Oak</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#story">Our Story</a></li>
+    <li><a href="#contact" class="nav-cta">Order Now</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-eyebrow">Est. 2018 · Specialty Coffee</div>
+    <h1>Coffee <em>crafted</em><br>with soul</h1>
+    <p class="hero-desc">Single-origin beans, roasted in-house, brewed with intention. Every cup tells the story of the hands that grew it.</p>
+    <div class="btn-group">
+      <a href="#menu" class="btn-primary">Explore Menu</a>
+      <a href="#about" class="btn-outline">Our Story</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">12+</div>
+        <div class="stat-label">Origins</div>
+      </div>
+      <div>
+        <div class="stat-num">4.9★</div>
+        <div class="stat-label">Rating</div>
+      </div>
+      <div>
+        <div class="stat-num">6yrs</div>
+        <div class="stat-label">Roasting</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-img-wrapper">
+      <svg class="coffee-illustration" viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Steam -->
+        <g class="steam-line">
+          <path d="M130 90 Q125 70 130 55 Q135 40 130 25" stroke="rgba(245,240,232,0.5)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        </g>
+        <g class="steam-line">
+          <path d="M160 85 Q155 65 160 50 Q165 35 160 20" stroke="rgba(245,240,232,0.5)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        </g>
+        <g class="steam-line">
+          <path d="M190 90 Q185 70 190 55 Q195 40 190 25" stroke="rgba(245,240,232,0.5)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        </g>
+        <!-- Saucer -->
+        <ellipse cx="160" cy="250" rx="95" ry="16" fill="rgba(196,126,58,0.25)"/>
+        <ellipse cx="160" cy="248" rx="88" ry="12" fill="rgba(196,126,58,0.4)"/>
+        <!-- Cup -->
+        <path d="M90 165 L105 245 H215 L230 165 Z" fill="rgba(245,240,232,0.12)" stroke="rgba(245,240,232,0.25)" stroke-width="1.5"/>
+        <ellipse cx="160" cy="165" rx="70" ry="14" fill="rgba(245,240,232,0.18)" stroke="rgba(245,240,232,0.3)" stroke-width="1.5"/>
+        <!-- Coffee surface -->
+        <ellipse cx="160" cy="165" rx="60" ry="11" fill="rgba(107,63,31,0.9)"/>
+        <!-- Latte art -->
+        <path d="M145 165 Q155 158 165 165 Q175 172 185 165" stroke="rgba(245,240,232,0.4)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <circle cx="160" cy="165" r="3" fill="rgba(245,240,232,0.3)"/>
+        <!-- Handle -->
+        <path d="M230 185 Q265 185 265 210 Q265 235 230 235" stroke="rgba(245,240,232,0.3)" stroke-width="8" stroke-linecap="round" fill="none"/>
+      </svg>
+    </div>
+    <div class="hero-badge">
+      <span>☕ Single Origin · Specialty Grade ·</span>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track" id="marquee">
+    <span class="marquee-item">Ethiopia Yirgacheffe</span>
+    <span class="marquee-item">Colombia Huila</span>
+    <span class="marquee-item">Guatemala Antigua</span>
+    <span class="marquee-item">Kenya AA</span>
+    <span class="marquee-item">Costa Rica Tarrazu</span>
+    <span class="marquee-item">Brazil Cerrado</span>
+    <span class="marquee-item">Panama Geisha</span>
+    <span class="marquee-item">Indonesia Sumatra</span>
+    <span class="marquee-item">Ethiopia Yirgacheffe</span>
+    <span class="marquee-item">Colombia Huila</span>
+    <span class="marquee-item">Guatemala Antigua</span>
+    <span class="marquee-item">Kenya AA</span>
+    <span class="marquee-item">Costa Rica Tarrazu</span>
+    <span class="marquee-item">Brazil Cerrado</span>
+    <span class="marquee-item">Panama Geisha</span>
+    <span class="marquee-item">Indonesia Sumatra</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-image"></div>
+  <div class="about-content">
+    <div class="section-tag">Our Philosophy</div>
+    <h2>From farm to <em>your cup</em></h2>
+    <p class="about-text">We believe extraordinary coffee starts long before brewing. We travel to origin farms, build relationships with growers, and roast each batch with the same care and respect those farmers put into their harvest.</p>
+    <ul class="feature-list">
+      <li>Direct trade with 12+ smallholder farms worldwide</li>
+      <li>Small-batch roasting, never more than 48hrs old</li>
+      <li>Certified organic and Rainforest Alliance partners</li>
+      <li>Compostable packaging, zero-waste initiative</li>
+    </ul>
+  </div>
+</section>
+
+<!-- MENU -->
+<section class="menu" id="menu">
+  <div class="section-header">
+    <div>
+      <div class="section-tag">What We Brew</div>
+      <h2>Our Menu</h2>
+    </div>
+  </div>
+  <div class="menu-tabs">
+    <button class="tab-btn active" data-tab="espresso">Espresso</button>
+    <button class="tab-btn" data-tab="filter">Filter</button>
+    <button class="tab-btn" data-tab="food">Food</button>
+    <button class="tab-btn" data-tab="cold">Cold Brew</button>
+  </div>
+
+  <div class="menu-section active" id="espresso">
+    <div class="menu-card" data-name="Flat White" data-price="3.80" data-emoji="☕">
+      <div class="menu-card-img">☕</div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Flat White</div>
+        <div class="menu-card-desc">Double ristretto, silky microfoam, velvety texture. Our house staple.</div>
+        <div class="menu-card-footer">
+          <div class="menu-price">£3.80</div>
+          <button class="add-btn" onclick="addToCart(this)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="menu-card" data-name="Cortado" data-price="3.50" data-emoji="🫖">
+      <div class="menu-card-img">🫖</div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Cortado</div>
+        <div class="menu-card-desc">Equal parts espresso and warm milk, bold and balanced.</div>
+        <div class="menu-card-footer">
+          <div class="menu-price">£3.50</div>
+          <button class="add-btn" onclick="addToCart(this)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="menu-card" data-name="Oat Latte" data-price="4.20" data-emoji="🌾">
+      <div class="menu-card-img">🌾</div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Oat Latte</div>
+        <div class="menu-card-desc">House-blend oat milk, creamy and naturally sweet. Barista's favourite.</div>
+        <div class="menu-card-footer">
+          <div class="menu-price">£4.20</div>
+          <button class="add-btn" onclick="addToCart(this)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="menu-card" data-name="Piccolo" data-price="3.20" data-emoji="⚗️">
+      <div class="menu-card-img">⚗️</div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Piccolo</div>
+        <div class="menu-card-desc">Ristretto topped with warm milk in a small glass. Intense & creamy.</div>
+        <div class="menu-card-footer">
+          <div class="menu-price">£3.20</div>
+          <button class="add-btn" onclick="addToCart(this)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="menu-section" id="filter">
+    <div class="menu-card" data-name="V60 Pour Over" data-price="4.80" data-emoji="🫙">
+      <div class="menu-card-img">🫙</div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">V60 Pour Over</div>
+        <div class="menu-card-desc">Hand-poured, single-origin. Clean, clear and complex. Served at peak temperature.</div>
+        <div class="menu-card-footer">
+          <div class="menu-price">£4.80</div>
+          <button class="add-btn" onclick="addToCart(this)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="menu-card" data-name="AeroPress" data-price="4.20" data-emoji="🔭">
+      <div class="menu-card-img">🔭</div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">AeroPress</div>
+        <div class="menu-card-desc">Immersion-pressed, low acidity, smooth body. Great with a pastry.</div>
+        <div class="menu-card-footer">
+          <div class="menu-price">£4.20</div>
+          <button class="add-btn" onclick="addToCart(this)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="menu-card" data-name="Chemex" data-price="5.20" data-emoji="⚱️">
+      <div class="menu-card-img">⚱️</div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Chemex (2 cups)</div>
+        <div class="menu-card-desc">Thick bonded paper filter, ultra-clean cup, ideal for sharing.</div>
+        <div class="menu-card-footer">
+          <div class="menu-price">£5.20</div>
+          <button class="add-btn" onclick="addToCart(this)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="menu-section" id="food">
+    <div class="menu-card" data-name="Almond Croissant" data-price="3.90" data-emoji="🥐">
+      <div class="menu-card-img">🥐</div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Almond Croissant</div>
+        <div class="menu-card-desc">Twice-baked with almond frangipane, crisp and flaky. Freshly made daily.</div>
+        <div class="menu-card-footer">
+          <div class="menu-price">£3.90</div>
+          <button class="add-btn" onclick="addToCart(this)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="menu-card" data-name="Banana Bread" data-price="3.50" data-emoji="🍞">
+      <div class="menu-card-img">🍞</div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Banana Bread</div>
+        <div class="menu-card-desc">Walnut and dark chocolate banana bread. Dense, moist, and warming.</div>
+        <div class="menu-card-footer">
+          <div class="menu-price">£3.50</div>
+          <button class="add-btn" onclick="addToCart(this)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="menu-card" data-name="Avocado Toast" data-price="7.50" data-emoji="🥑">
+      <div class="menu-card-img">🥑</div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Avocado Toast</div>
+        <div class="menu-card-desc">Sourdough, smashed avo, chilli flakes, poached egg, lemon zest.</div>
+        <div class="menu-card-footer">
+          <div class="menu-price">£7.50</div>
+          <button class="add-btn" onclick="addToCart(this)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="menu-section" id="cold">
+    <div class="menu-card" data-name="Cold Brew" data-price="4.50" data-emoji="🧊">
+      <div class="menu-card-img">🧊</div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Cold Brew</div>
+        <div class="menu-card-desc">18-hour steep, naturally sweet, low acid. Served over ice.</div>
+        <div class="menu-card-footer">
+          <div class="menu-price">£4.50</div>
+          <button class="add-btn" onclick="addToCart(this)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="menu-card" data-name="Nitro Cold Brew" data-price="5.20" data-emoji="🌫️">
+      <div class="menu-card-img">🌫️</div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Nitro Cold Brew</div>
+        <div class="menu-card-desc">Nitrogen-charged, cascading velvet texture, no ice needed.</div>
+        <div class="menu-card-footer">
+          <div class="menu-price">£5.20</div>
+          <button class="add-btn" onclick="addToCart(this)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="menu-card" data-name="Iced Oat Latte" data-price="4.80" data-emoji="🥛">
+      <div class="menu-card-img">🥛</div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Iced Oat Latte</div>
+        <div class="menu-card-desc">Chilled espresso pulled over ice, topped with oat milk. Summer in a cup.</div>
+        <div class="menu-card-footer">
+          <div class="menu-price">£4.80</div>
+          <button class="add-btn" onclick="addToCart(this)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="story">
+  <div class="section-tag">How We Do It</div>
+  <h2 style="color: var(--cream);">From bean to <em style="color: var(--gold);">brew</em></h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">🌱</div>
+      <div class="step-title">Sourcing</div>
+      <div class="step-desc">We travel to farms across 3 continents, tasting, selecting, and paying premium prices for exceptional lots.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">🔥</div>
+      <div class="step-title">Roasting</div>
+      <div class="step-desc">Roasted in small batches on our vintage Probat drum roaster, developing each bean's full potential.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">⚗️</div>
+      <div class="step-title">Brewing</div>
+      <div class="step-desc">Every extraction is dialled in fresh daily. Water temperature, grind size, and time are obsessed over.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">☕</div>
+      <div class="step-title">Serving</div>
+      <div class="step-desc">Your cup, made to order. No sitting espresso. Every drink is a fresh, considered act of craft.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="section-tag">What People Say</div>
+  <h2>Loved by coffee people</h2>
+  <div class="reviews-grid">
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">"Best flat white in the city, no contest. The oat milk they use is unlike anything else — silky and perfectly steamed."</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">SM</div>
+        <div>
+          <div class="reviewer-name">Sarah M.</div>
+          <div class="reviewer-since">Regular since 2021</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">"The V60 pour-over changed how I think about coffee. Complex, clean, and honestly meditative to watch being made."</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">JK</div>
+        <div>
+          <div class="reviewer-name">James K.</div>
+          <div class="reviewer-since">Coffee enthusiast</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">"I've been to specialty cafés across London and Tokyo. Ember & Oak is the real deal. The sourcing story alone is worth a visit."</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">LT</div>
+        <div>
+          <div class="reviewer-name">Lena T.</div>
+          <div class="reviewer-since">Food writer</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="section-tag" style="color: var(--espresso); opacity: 0.6;">Come Visit</div>
+  <h2 style="color: var(--espresso);">Open every morning<br>from 7am</h2>
+  <p>14 Roaster's Lane, Shoreditch, London · Mon–Fri 7am–6pm · Sat–Sun 8am–5pm</p>
+  <a href="#" class="btn-primary" style="background: var(--espresso);">Get Directions</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="footer-logo">Ember <span>&</span> Oak</span>
+      <p class="footer-desc">Specialty coffee roasters and café based in Shoreditch, London. Open 7 days a week.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Explore</h4>
+      <ul>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#story">Our Story</a></li>
+        <li><a href="#">Wholesale</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <ul>
+        <li><a href="#">Whole Beans</a></li>
+        <li><a href="#">Brew Gear</a></li>
+        <li><a href="#">Gift Cards</a></li>
+        <li><a href="#">Subscriptions</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Newsletter</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Ember & Oak Coffee. All rights reserved.</span>
+    <span>Made with ☕ in London</span>
+  </div>
+</footer>
+
+<!-- CART FAB -->
+<button class="cart-fab" id="cartFab" onclick="toggleCart()">
+  🛒
+  <span class="cart-count" id="cartCount">0</span>
+</button>
+
+<!-- CART DRAWER -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-drawer-head">
+    <h3>Your Order</h3>
+    <button class="close-btn" onclick="toggleCart()">×</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="empty-cart">
+      <div class="empty-cart-icon">☕</div>
+      <div>Your cart is empty.<br>Add something delicious.</div>
+    </div>
+  </div>
+<div class="cart-footer" id="cartFooter" style="display:none">
+  <div class="cart-total">
+    <span>Total</span>
+    <span id="cartTotal">£0.00</span>
+  </div>
+
+  <button class="checkout-btn" onclick="checkout()">
+    Proceed to Checkout →
+  </button>
+
+</div>
+</div>
+
+  
+<script>
+
+  // Nav scroll effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // Menu tabs
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const menuSections = document.querySelectorAll('.menu-section');
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      menuSections.forEach(s => s.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  // Cart
+  let cart = [];
+
+  function addToCart(btn) {
+    const card = btn.closest('.menu-card');
+    const name = card.dataset.name;
+    const price = parseFloat(card.dataset.price);
+    const emoji = card.dataset.emoji;
+
+    const existing = cart.find(i => i.name === name);
+    if (existing) {
+      existing.qty++;
+    } else {
+      cart.push({ name, price, emoji, qty: 1 });
+    }
+
+    btn.textContent = '✓';
+    btn.style.background = 'var(--caramel)';
+    btn.style.color = 'var(--cream)';
+    btn.style.borderColor = 'var(--caramel)';
+    setTimeout(() => {
+      btn.textContent = '+';
+      btn.style.background = '';
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    }, 800);
+
+    updateCart();
+  }
+
+  function updateCart() {
+    const count = cart.reduce((a, i) => a + i.qty, 0);
+    const total = cart.reduce((a, i) => a + i.price * i.qty, 0);
+
+    const countEl = document.getElementById('cartCount');
+    countEl.textContent = count;
+    countEl.classList.toggle('show', count > 0);
+
+    const itemsEl = document.getElementById('cartItems');
+    const footerEl = document.getElementById('cartFooter');
+
+    if (cart.length === 0) {
+      itemsEl.innerHTML = `<div class="empty-cart"><div class="empty-cart-icon">☕</div><div>Your cart is empty.<br>Add something delicious.</div></div>`;
+      footerEl.style.display = 'none';
+    } else {
+      itemsEl.innerHTML = cart.map(item => `
+        <div class="cart-item">
+          <div class="cart-item-icon">${item.emoji}</div>
+          <div class="cart-item-info">
+            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-price">£${(item.price * item.qty).toFixed(2)}</div>
+          </div>
+          <div class="qty-ctrl">
+            <button class="qty-btn" onclick="changeQty('${item.name}', -1)">−</button>
+            <span class="qty-num">${item.qty}</span>
+            <button class="qty-btn" onclick="changeQty('${item.name}', 1)">+</button>
+          </div>
+        </div>
+      `).join('');
+      footerEl.style.display = 'block';
+      document.getElementById('cartTotal').textContent = `£${total.toFixed(2)}`;
+    }
+  }
+
+  function changeQty(name, delta) {
+    const item = cart.find(i => i.name === name);
+    if (!item) return;
+    item.qty += delta;
+    if (item.qty <= 0) cart = cart.filter(i => i.name !== name);
+    updateCart();
+  }
+
+  function toggleCart() {
+    const drawer = document.getElementById('cartDrawer');
+    const overlay = document.getElementById('cartOverlay');
+    drawer.classList.toggle('open');
+    overlay.classList.toggle('open');
+  }
+
+  // Intersection observer for subtle entrance
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.step, .review-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+ 
+async function checkout() {
+  alert("CLICKED"); // 🔥 MUST SHOW
+
+  console.log("Checkout clicked");
+
+  if (cart.length === 0) {
+    alert("Cart is empty!");
+    return;
+  }
+
+  const total = cart.reduce((a, i) => a + i.price * i.qty, 0);
+
+  try {
+    const res = await fetch("http://localhost:5000/api/order", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        items: cart,
+        total: total
+      })
+    });
+
+    const data = await res.json();
+
+    alert("Order placed successfully ✅");
+
+    cart = [];
+    updateCart();
+
+  } catch (err) {
+    console.error(err);
+    alert("Error placing order ❌");
+  }
+}
+
+</script>
+</body>
+</html>
